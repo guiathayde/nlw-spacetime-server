@@ -3,14 +3,24 @@ import 'dotenv/config';
 import fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
+import multipart from '@fastify/multipart';
+import { resolve } from 'path';
 
 import { authRoutes } from './routes/auth';
+import { uploadRoutes } from './routes/upload';
 import { memoriesRoutes } from './routes/memories';
 
 const app = fastify();
 
+app.register(multipart);
+
+app.register(require('@fastify/static'), {
+  root: resolve(__dirname, '..', 'uploads'),
+  prefix: '/uploads',
+});
+
 app.register(cors, {
-  origin: ['http://localhost:3000', 'https://spacetime.guiathayde.dev'],
+  origin: true,
 });
 
 app.register(jwt, {
@@ -18,6 +28,7 @@ app.register(jwt, {
 });
 
 app.register(authRoutes);
+app.register(uploadRoutes);
 app.register(memoriesRoutes);
 
 app
