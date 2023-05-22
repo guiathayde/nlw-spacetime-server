@@ -20,6 +20,7 @@ model User {
 model Memory {
   id        String   @id @default(uuid())
   coverUrl  String
+  coverType String
   content   String
   isPublic  Boolean  @default(false)
   createdAt DateTime @default(now())
